@@ -82,7 +82,6 @@ app.get('/webhook', function(req, res) {
  */
 app.post('/webhook', function (req, res) {
   var data = req.body;
-
   // Make sure this is a page subscription
   if (data.object == 'page') {
     // Iterate over each entry
@@ -90,7 +89,6 @@ app.post('/webhook', function (req, res) {
     data.entry.forEach(function(pageEntry) {
       var pageID = pageEntry.id;
       var timeOfEvent = pageEntry.time;
-
       // Iterate over each messaging event
       pageEntry.messaging.forEach(function(messagingEvent) {
         if (messagingEvent.optin) {
@@ -221,7 +219,7 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  console.log("Received message for user %d and page %d at %d with message:", 
+   console.log("Received message for user %d and page %d at %d with message:", 
     senderID, recipientID, timeOfMessage);
   console.log(JSON.stringify(message));
 
@@ -234,7 +232,7 @@ function receivedMessage(event) {
   var messageText = message.text;
   var messageAttachments = message.attachments;
   var quickReply = message.quick_reply;
-
+ 
   if (isEcho) {
     // Just logging message echoes to console
     console.log("Received echo for message %s and app %d with metadata %s", 
@@ -250,6 +248,7 @@ function receivedMessage(event) {
   }
 
   if (messageText) {
+      console.log(messageText, "here");
 
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
@@ -287,7 +286,7 @@ function receivedMessage(event) {
         sendReceiptMessage(senderID);
         break;
 
-      case 'quick reply':
+      case 'I have been abused':
         sendQuickReply(senderID);
         break;        
 
@@ -690,34 +689,43 @@ function sendReceiptMessage(recipientId) {
  *
  */
 function sendQuickReply(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: "What's your favorite movie genre?",
-      quick_replies: [
-        {
-          "content_type":"text",
-          "title":"Action",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION"
-        },
-        {
-          "content_type":"text",
-          "title":"Comedy",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
-        },
-        {
-          "content_type":"text",
-          "title":"Drama",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
-        }
-      ]
-    }
-  };
+ request({
+    uri: 'https://graph.facebook.com/v2.6/'+recipientId,
+    qs: { access_token: PAGE_ACCESS_TOKEN },
+    method: 'GET',
+    json: {}
 
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+  		var messageData = {
+   			recipient: {
+      	id: recipientId
+    	},
+    	message: {
+      	text: "Hi "+ body.first_name  + ", I understand this is a tough time for you. I'm here to help. When did this happen?",
+      	quick_replies: [
+        	{
+          	"content_type":"text",
+          	"title":"Today",
+          	"payload":"today"
+        	},
+        	{
+          	"content_type":"text",
+         	 	"title":"Last week",
+         		"payload":"lastWeek"
+        	},
+       	 	{
+						"content_type":"text",
+          	"title":"Last month",
+          	"payload":"lastMonth"
+        	}
+     	 	]
+    	}
+  	};
   callSendAPI(messageData);
-}
+    }
+	});
+};
 
 /*
  * Send a read receipt to indicate the message has been read
