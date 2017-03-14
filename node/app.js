@@ -16,7 +16,8 @@ const
   crypto = require('crypto'),
   express = require('express'),
   https = require('https'),  
-  request = require('request');
+  request = require('request'),
+  googleplaces = require('googleplaces')
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -219,9 +220,9 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-   console.log("Received message for user %d and page %d at %d with message:", 
-    senderID, recipientID, timeOfMessage);
-  console.log(JSON.stringify(message));
+  //  console.log("Received message for user %d and page %d at %d with message:", 
+  //   senderID, recipientID, timeOfMessage);
+  // console.log(JSON.stringify(message));
 
   var isEcho = message.is_echo;
   var messageId = message.mid;
@@ -242,14 +243,18 @@ function receivedMessage(event) {
     var quickReplyPayload = quickReply.payload;
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
+    if(quickReplyPayload == 'today') {
+      sendTextMessage(senderID, "This must be really traumatic for you. I hope you're safe. Shall I suggest some nearby hospitals for you?");
+    } else if(quickReplyPayload == 'lastWeek') {
+      sendTextMessage(senderID, "The last week must have been really hard for you. Shall I suggest the nearest help centre for you?");
+    } else if(quickReplyPayload == 'lastMonth') {
+      sendTextMessage(senderID, "The last month must have been really painful for you. Shall I suggest a lawyer for you?");
+    }
 
-    sendTextMessage(senderID, "Quick reply tapped");
     return;
   }
 
   if (messageText) {
-      console.log(messageText, "here");
-
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
@@ -310,7 +315,37 @@ function receivedMessage(event) {
         sendTextMessage(senderID, messageText);
     }
   } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received");
+      
+    /**
+    * Currently assume only one attachment exists
+    **/
+    var attachment = messageAttachments[0];
+    var attachmentType = attachment.type;
+
+    switch (attachmentType) {
+      case 'location':
+        console.log(attachment.payload.coordinates);
+        var lat = attachment.payload.coordinates.lat;
+        var lon = attachment.payload.coordinates.long;
+        console.log(lat, lon);
+        var NearBySearch = require("googleplaces/lib/NearBySearch");
+        var nearBySearch = new NearBySearch(config.get('googlePlacesApiKey'), config.get('googlePlacesApiKeyOutputFormat'));
+        var parameters = {
+            location: [lat, lon],
+            keyword: "hospital"
+        };
+
+        nearBySearch(parameters, function (error, response) {
+            if(error) {
+              console.log(error);
+              return false;
+            }
+            console.log(response);
+        });
+        break;
+      default: 
+        sendTextMessage(senderID, "Message with attachment received");
+    }
   }
 }
 
@@ -360,9 +395,10 @@ function receivedPostback(event) {
   console.log("Received postback for user %d and page %d with payload '%s' " + 
     "at %d", senderID, recipientID, payload, timeOfPostback);
 
-  // When a postback is called, we'll send a message back to the sender to 
-  // let them know it was successful
-  sendTextMessage(senderID, "Postback called");
+  console.log(payload);
+  if(payload == 'get_started') {
+    sendTextMessage(senderID, "Hi, Can you please share your location?");
+  }
 }
 
 /*
@@ -699,30 +735,30 @@ function sendQuickReply(recipientId) {
     if (!error && response.statusCode == 200) {
   		var messageData = {
    			recipient: {
-      	id: recipientId
-    	},
-    	message: {
-      	text: "Hi "+ body.first_name  + ", I understand this is a tough time for you. I'm here to help. When did this happen?",
-      	quick_replies: [
-        	{
-          	"content_type":"text",
-          	"title":"Today",
-          	"payload":"today"
-        	},
-        	{
-          	"content_type":"text",
-         	 	"title":"Last week",
-         		"payload":"lastWeek"
-        	},
-       	 	{
-						"content_type":"text",
-          	"title":"Last month",
-          	"payload":"lastMonth"
-        	}
-     	 	]
-    	}
-  	};
-  callSendAPI(messageData);
+          id: recipientId
+        },
+        message: {
+        	text: "Hi "+ body.first_name  + ", I understand this is a tough time for you. I'm here to help. When did this happen?",
+        	quick_replies: [
+          	{
+            	"content_type":"text",
+            	"title":"Today",
+            	"payload":"today"
+          	},
+          	{
+            	"content_type":"text",
+           	 	"title":"Last week",
+           		"payload":"lastWeek"
+          	},
+         	 	{
+  						"content_type":"text",
+            	"title":"Last month",
+            	"payload":"lastMonth"
+          	}
+       	 	]
+        }
+      };
+      callSendAPI(messageData);
     }
 	});
 };
