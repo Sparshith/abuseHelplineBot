@@ -292,7 +292,7 @@ function receivedMessage(event) {
         break;
 
       case 'I have been abused':
-        sendQuickReply(senderID, 2);
+        sendQuickReply(senderID, 'ask_abused_time');
         break;        
 
       case 'read receipt':
@@ -341,7 +341,6 @@ function receivedMessage(event) {
               console.log(error);
               return false;
             }
-            console.log(response['results'][1]['name']);
             sendTextMessage(senderID, "This is the nearest hospital to you." );
             sendTextMessage(senderID, "https://www.google.com/maps/dir/" + lat + "," + lon + "/" + response['results'][1]['name'].split(' ').join('+'));
         });
@@ -400,7 +399,7 @@ function receivedPostback(event) {
 
   console.log(payload);
   if(payload == 'get_started') {
-    sendQuickReply(senderID, 1);
+    sendQuickReply(senderID, 'initial_location');
   }
 }
 
@@ -739,44 +738,47 @@ function sendQuickReply(recipientId, use_case) {
 
       var quickReplyMessage = '';
 
-        switch(use_case) 
+      switch(use_case) 
       {
-       case 1 :  quickReplyMessage = { 
-          text : "Hi " + body.first_name + ", We are here to help you. Send us your location to help you out better.", 
-                  quick_replies: [
-            {
-              "content_type":"location",
-              "payload":"user_location"
-            }
-            ]
-     };
-   
-break;
-       case 2 :  quickReplyMessage = {
-          text: "Hi "+ body.first_name  + ", I understand this is a tough time for you. I'm here to help. When did this happen?",
-          quick_replies: [
-            {
-              "content_type":"text",
-              "title":"Today",
-              "payload":"today"
-            },
-            {
-              "content_type":"text",
-              "title":"Last week",
-              "payload":"lastWeek"
-            },
-            {
-              "content_type":"text",
-              "title":"Last month",
-              "payload":"lastMonth"
-            }
-          ]
-        }; 
-        break;
+      case 'initial_location' :  quickReplyMessage = 
+                {text : "Hi " + body.first_name + ", We are here to help you. Send us your location to help you out better.", 
+                        quick_replies: 
+                          [
+                            {
+                              "content_type":"location",
+                              "payload":"user_location"
+                            }
+                          ]
+                };
+      break;
+     
 
-        default : break;
-      
-      }
+      case 'ask_abused_time' :  quickReplyMessage = 
+                {text: "Hi "+ body.first_name  + ", I understand this is a tough time for you. I'm here to help. When did this happen?",
+                        quick_replies: 
+                        [
+                            {
+                              "content_type":"text",
+                              "title":"Today",
+                              "payload":"today"
+                            },
+                            {
+                              "content_type":"text",
+                              "title":"Last week",
+                              "payload":"lastWeek"
+                            },
+                            {
+                              "content_type":"text",
+                              "title":"Last month",
+                              "payload":"lastMonth"
+                            }
+                        ]
+                }; 
+      break;
+
+      default : break;
+    
+    }
 
   		var messageData = {
    			recipient: {
