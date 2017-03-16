@@ -1,6 +1,8 @@
 {
-    "appSecret": "",
-    "pageAccessToken": "",
-    "validationToken": "",
-    "serverURL": ""
+    "appSecret": "10d0355e8e607a8c5185d713b1686c1f",
+    "pageAccessToken": "EAAI7DvarRZAkBAFNXqVEwZAZAC10y7XkisUquMJuBLYUZCuAIADQZBO2xn0cZABaHX0QNBhBYaZCc1qnYXYYRCYlDyG4stHlQZBuALB20tgn2ZCPHqWxpK9F0fT0BSbbexYDZB3XfjbazX9tp55IVDa5bfa0khf1P3Y1BoSN6s2KZAjkQZDZD",
+    "validationToken": "rvce1234",
+    "serverURL": "https://f99bd091.ngrok.io/webhook",
+    "googlePlacesApiKey": "AIzaSyBQ-uqDJXzb1DBD9ATzYtEwiGYZXluAVEs",
+    "googlePlacesApiKeyOutputFormat" : "json"
 }
