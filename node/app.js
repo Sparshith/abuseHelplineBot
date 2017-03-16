@@ -292,7 +292,7 @@ function receivedMessage(event) {
         break;
 
       case 'I have been abused':
-        sendQuickReply(senderID);
+        sendQuickReply(senderID, 'ask_abused_time');
         break;        
 
       case 'read receipt':
@@ -332,7 +332,8 @@ function receivedMessage(event) {
         var nearBySearch = new NearBySearch(config.get('googlePlacesApiKey'), config.get('googlePlacesApiKeyOutputFormat'));
         var parameters = {
             location: [lat, lon],
-            keyword: "hospital"
+            radius : 1000,
+            type : ['hospital']
         };
 
         nearBySearch(parameters, function (error, response) {
@@ -340,7 +341,8 @@ function receivedMessage(event) {
               console.log(error);
               return false;
             }
-            console.log(response);
+            sendTextMessage(senderID, "This is the nearest hospital to you." );
+            sendTextMessage(senderID, "https://www.google.com/maps/dir/" + lat + "," + lon + "/" + response['results'][1]['name'].split(' ').join('+'));
         });
         break;
       default: 
@@ -397,7 +399,7 @@ function receivedPostback(event) {
 
   console.log(payload);
   if(payload == 'get_started') {
-    sendTextMessage(senderID, "Hi, Can you please share your location?");
+    sendQuickReply(senderID, 'initial_location');
   }
 }
 
@@ -724,7 +726,7 @@ function sendReceiptMessage(recipientId) {
  * Send a message with Quick Reply buttons.
  *
  */
-function sendQuickReply(recipientId) {
+function sendQuickReply(recipientId, use_case) {
  request({
     uri: 'https://graph.facebook.com/v2.6/'+recipientId,
     qs: { access_token: PAGE_ACCESS_TOKEN },
@@ -733,30 +735,56 @@ function sendQuickReply(recipientId) {
 
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
+
+      var quickReplyMessage = '';
+
+      switch(use_case) 
+      {
+      case 'initial_location' :  quickReplyMessage = 
+                {text : "Hi " + body.first_name + ", We are here to help you. Send us your location to help you out better.", 
+                        quick_replies: 
+                          [
+                            {
+                              "content_type":"location",
+                              "payload":"user_location"
+                            }
+                          ]
+                };
+      break;
+     
+
+      case 'ask_abused_time' :  quickReplyMessage = 
+                {text: "Hi "+ body.first_name  + ", I understand this is a tough time for you. I'm here to help. When did this happen?",
+                        quick_replies: 
+                        [
+                            {
+                              "content_type":"text",
+                              "title":"Today",
+                              "payload":"today"
+                            },
+                            {
+                              "content_type":"text",
+                              "title":"Last week",
+                              "payload":"lastWeek"
+                            },
+                            {
+                              "content_type":"text",
+                              "title":"Last month",
+                              "payload":"lastMonth"
+                            }
+                        ]
+                }; 
+      break;
+
+      default : break;
+    
+    }
+
   		var messageData = {
    			recipient: {
           id: recipientId
         },
-        message: {
-        	text: "Hi "+ body.first_name  + ", I understand this is a tough time for you. I'm here to help. When did this happen?",
-        	quick_replies: [
-          	{
-            	"content_type":"text",
-            	"title":"Today",
-            	"payload":"today"
-          	},
-          	{
-            	"content_type":"text",
-           	 	"title":"Last week",
-           		"payload":"lastWeek"
-          	},
-         	 	{
-  						"content_type":"text",
-            	"title":"Last month",
-            	"payload":"lastMonth"
-          	}
-       	 	]
-        }
+        message : quickReplyMessage
       };
       callSendAPI(messageData);
     }
