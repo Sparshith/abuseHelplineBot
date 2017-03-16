@@ -766,7 +766,7 @@ function sendQuickReply(recipientId, use_case) {
           
         case 'getStartedTalk':
           quickReplyMessage = {
-            text: "Sure, "+ body.first_name  + ". Which of these options seems viable for you?",
+            text: "Tell me, I am here for you. What can I do?",
             quick_replies: 
               [
                 {
