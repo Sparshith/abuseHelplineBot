@@ -401,6 +401,8 @@ function receivedPostback(event) {
   if(payload == 'get_started') {
     sendQuickReply(senderID, 'getStarted');
     // sendQuickReply(senderID, 'initial_location');
+  } else if(payload == 'getStartedTalk' || payload == 'getStartedHelp' || payload == 'getStartedAct') {
+    sendQuickReply(senderID, payload);
   }
 }
 
@@ -763,7 +765,7 @@ function sendQuickReply(recipientId, use_case) {
               ]
           };
           break;
-          
+
         case 'getStartedTalk':
           quickReplyMessage = {
             text: "Tell me, I am here for you. What can I do?",
