@@ -243,12 +243,12 @@ function receivedMessage(event) {
     var quickReplyPayload = quickReply.payload;
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
-    if(quickReplyPayload == 'today') {
-      sendTextMessage(senderID, "This must be really traumatic for you. I hope you're safe. Shall I suggest some nearby hospitals for you?");
-    } else if(quickReplyPayload == 'lastWeek') {
-      sendTextMessage(senderID, "The last week must have been really hard for you. Shall I suggest the nearest help centre for you?");
-    } else if(quickReplyPayload == 'lastMonth') {
-      sendTextMessage(senderID, "The last month must have been really painful for you. Shall I suggest a lawyer for you?");
+    if(quickReplyPayload == 'getStartedTalk') {
+      sendQuickReply(senderID, 'getStartedTalk');
+    } else if(quickReplyPayload == 'getStartedAct') {
+      sendQuickReply(senderID, 'getStartedAct');
+    } else if(quickReplyPayload == "getStartedHelp") {
+      sendQuickReply(senderID, 'getStartedHelp');
     }
 
     return;
@@ -399,7 +399,10 @@ function receivedPostback(event) {
 
   console.log(payload);
   if(payload == 'get_started') {
-    sendQuickReply(senderID, 'initial_location');
+    sendQuickReply(senderID, 'getStarted');
+    // sendQuickReply(senderID, 'initial_location');
+  } else if(payload == 'getStartedTalk' || payload == 'getStartedHelp' || payload == 'getStartedAct') {
+    sendQuickReply(senderID, payload);
   }
 }
 
@@ -738,47 +741,94 @@ function sendQuickReply(recipientId, use_case) {
 
       var quickReplyMessage = '';
 
-      switch(use_case) 
-      {
-      case 'initial_location' :  quickReplyMessage = 
-                {text : "Hi " + body.first_name + ", We are here to help you. Send us your location to help you out better.", 
-                        quick_replies: 
-                          [
-                            {
-                              "content_type":"location",
-                              "payload":"user_location"
-                            }
-                          ]
-                };
-      break;
-     
+      switch(use_case) {
+        case 'getStarted': 
+          quickReplyMessage = {
+            text: "Hi "+ body.first_name  + ", What would you like to do?",
+            quick_replies: 
+              [
+                {
+                  "content_type":"text",
+                  "title":"I want to talk",
+                  "payload":"getStartedTalk"
+                },
+                {
+                  "content_type":"text",
+                  "title":"I want to act",
+                  "payload":"getStartedAct"
+                },
+                {
+                  "content_type":"text",
+                  "title":"I want to help",
+                  "payload":"getStartedHelp"
+                }
+              ]
+          };
+          break;
 
-      case 'ask_abused_time' :  quickReplyMessage = 
-                {text: "Hi "+ body.first_name  + ", I understand this is a tough time for you. I'm here to help. When did this happen?",
-                        quick_replies: 
-                        [
-                            {
-                              "content_type":"text",
-                              "title":"Today",
-                              "payload":"today"
-                            },
-                            {
-                              "content_type":"text",
-                              "title":"Last week",
-                              "payload":"lastWeek"
-                            },
-                            {
-                              "content_type":"text",
-                              "title":"Last month",
-                              "payload":"lastMonth"
-                            }
-                        ]
-                }; 
-      break;
+        case 'getStartedTalk':
+          quickReplyMessage = {
+            text: "Tell me, I am here for you. What can I do?",
+            quick_replies: 
+              [
+                {
+                  "content_type":"text",
+                  "title":"I was abused",
+                  "payload":"gsTalkAbused"
+                },
+                {
+                  "content_type":"text",
+                  "title":"I want a lawyer",
+                  "payload":"gsTalkLawyer"
+                },
+                {
+                  "content_type":"text",
+                  "title":"I want a counsellor",
+                  "payload":"gsTalkCounsellor"
+                }
+              ]
+          };
+        break;
 
-      default : break;
+        case 'initial_location':
+          quickReplyMessage = { 
+            text : "Hi " + body.first_name + ", We are here to help you. Send us your location to help you out better.", 
+            quick_replies: 
+              [
+                {
+                  "content_type":"location",
+                  "payload":"user_location"
+                }
+              ]
+          };
+          break;
+        case 'ask_abused_time':
+          quickReplyMessage = {
+            text: "Hi "+ body.first_name  + ", I understand this is a tough time for you. I'm here to help. When did this happen?",
+            quick_replies: 
+              [
+                {
+                  "content_type":"text",
+                  "title":"Today",
+                  "payload":"today"
+                },
+                {
+                  "content_type":"text",
+                  "title":"Last week",
+                  "payload":"lastWeek"
+                },
+                {
+                  "content_type":"text",
+                  "title":"Last month",
+                  "payload":"lastMonth"
+                }
+              ]
+          }; 
+          break;
+        default:
+          break;
     
-    }
+      }
 
   		var messageData = {
    			recipient: {
@@ -786,6 +836,7 @@ function sendQuickReply(recipientId, use_case) {
         },
         message : quickReplyMessage
       };
+
       callSendAPI(messageData);
     }
 	});

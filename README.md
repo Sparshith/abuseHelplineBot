@@ -1,6 +1,34 @@
-# Messenger Platform Sample
+# Things we learnt building this project
 
-This is a sample project showcasing the Messenger Platform. You can go through the [walk-through](https://developers.facebook.com/docs/messenger-platform/quickstart) to understand this code in more detail. The [Complete Guide](https://developers.facebook.com/docs/messenger-platform/implementation) goes deeper into the features available.
+## Useful post calls to add features to a facebook bot.
+*  To add a getting started button
+```
+curl -X POST "https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=PAGE_ACCESS_TOKEN"
+```
+* To add a persistent menu
+```
+curl -X POST -H "Content-Type: application/json" -d '{
+  "setting_type" : "call_to_actions",
+  "thread_state" : "existing_thread",
+  "call_to_actions":[
+    {
+      "type":"postback",
+      "title":"I want to talk",
+      "payload":"getStartedTalk"
+    },
+    {
+      "type":"postback",
+      "title":"I want to act",
+      "payload":"getStartedAct"
+    },
+    {
+      "type":"postback",
+      "title":"I want to help",
+      "payload":"getStartedHelp"
+    },
 
-Visit the [dev site](https://developers.facebook.com/docs/messenger-platform/) to find out more details about the Messenger Platform.
+  ]
+}' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=PAGE_ACCESS_TOKEN"
+```
+
 
