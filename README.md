@@ -1,6 +1,10 @@
-# Messenger Platform Sample
+# Things we learnt building this project
 
-This is a sample project showcasing the Messenger Platform. You can go through the [walk-through](https://developers.facebook.com/docs/messenger-platform/quickstart) to understand this code in more detail. The [Complete Guide](https://developers.facebook.com/docs/messenger-platform/implementation) goes deeper into the features available.
+## Useful post calls to add features to a facebook bot.
+*  To add a getting started button
+```
+curl -X POST "https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=YOUR_ACCESS_TOKEN"
+```
 
-Visit the [dev site](https://developers.facebook.com/docs/messenger-platform/) to find out more details about the Messenger Platform.
+
 
