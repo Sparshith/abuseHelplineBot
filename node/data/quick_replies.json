@@ -1,22 +1,22 @@
 {
   "getStarted" :
-  	[
+		[
 			{
-			  "content_type":"text",
-			  "title":"I want to talk",
-			  "payload":"getStartedTalk"
+			"content_type":"text",
+			"title":"I want to talk",
+			"payload":"getStartedTalk"
 			},
 			{
-			  "content_type":"text",
-			  "title":"I want to act",
-			  "payload":"getStartedAct"
+			"content_type":"text",
+			"title":"I want to act",
+			"payload":"getStartedAct"
 			},
 			{
-			  "content_type":"text",
-			  "title":"I want to help",
-			  "payload":"getStartedHelp"
+			"content_type":"text",
+			"title":"I want to help",
+			"payload":"getStartedHelp"
 			}
-   	],
+		],
   "getStartedTalk" : 
   	[
       {
