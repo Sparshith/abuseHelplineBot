@@ -1,7 +1,21 @@
 # Things we learnt building this project
 
 ## Useful post calls to add features to a facebook bot.
-*  To add a getting started button
+* To add a gettig started button
+```
+curl -X POST -H "Content-Type: application/json" -d '{
+  "setting_type":"call_to_actions",
+  "thread_state":"new_thread",
+  "call_to_actions":[
+    {
+      "payload":"USER_DEFINED_PAYLOAD"
+    }
+  ]
+}' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=PAGE_ACCESS_TOKEN"
+
+```
+
+*  To revalidate webhook
 ```
 curl -X POST "https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=PAGE_ACCESS_TOKEN"
 ```
