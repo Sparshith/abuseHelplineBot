@@ -1,63 +1,63 @@
 {
   "getStarted" :
-		[
-			{
-			"content_type":"text",
-			"title":"I want to talk",
-			"payload":"getStartedTalk"
-			},
-			{
-			"content_type":"text",
-			"title":"I want to act",
-			"payload":"getStartedAct"
-			},
-			{
-			"content_type":"text",
-			"title":"I want to help",
-			"payload":"getStartedHelp"
-			}
-		],
+	[
+		{
+		"content_type":"text",
+		"title":"I want to talk",
+		"payload":"getStartedTalk"
+		},
+		{
+		"content_type":"text",
+		"title":"I want to act",
+		"payload":"getStartedAct"
+		},
+		{
+		"content_type":"text",
+		"title":"I want to help",
+		"payload":"getStartedHelp"
+		}
+	],
   "getStartedTalk" : 
   	[
-      {
-        "content_type":"text",
-        "title":"I was abused",
-        "payload":"gsTalkAbused"
-      },
-      {
-        "content_type":"text",
-        "title":"I want a lawyer",
-        "payload":"gsTalkLawyer"
-      },
-      {
-        "content_type":"text",
-        "title":"I want a counsellor",
-        "payload":"gsTalkCounsellor"
-      }
+	      {
+		"content_type":"text",
+		"title":"I was abused",
+		"payload":"gsTalkAbused"
+	      },
+	      {
+		"content_type":"text",
+		"title":"I want a lawyer",
+		"payload":"gsTalkLawyer"
+	      },
+	      {
+		"content_type":"text",
+		"title":"I want a counsellor",
+		"payload":"gsTalkCounsellor"
+	      }
   	],
   "askAbusedTime" : 
   	[
-      {
-        "content_type":"text",
-        "title":"Today",
-        "payload":"today"
-      },
-      {
-        "content_type":"text",
-        "title":"Last week",
-        "payload":"lastWeek"
-      },
-      {
-        "content_type":"text",
-        "title":"Last month",
-        "payload":"lastMonth"
-      }
-  	],
-  "initialLocation":
-    [
-      {
-        "content_type":"location",
-        "payload":"user_location"
-      }
-    ]
+	      {
+		"content_type":"text",
+		"title":"Today",
+		"payload":"today"
+	      },
+	      {
+		"content_type":"text",
+		"title":"Last week",
+		"payload":"lastWeek"
+	      },
+	      {
+		"content_type":"text",
+		"title":"Last month",
+		"payload":"lastMonth"
+	      }
+		],
+	  "initialLocation":
+	    [
+	      {
+		"content_type":"location",
+		"payload":"user_location"
+	      }
+    	]
 }
