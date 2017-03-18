@@ -2,19 +2,19 @@
   "getStarted" :
 	[
 		{
-		"content_type":"text",
-		"title":"I want to talk",
-		"payload":"getStartedTalk"
+			"content_type":"text",
+			"title":"I want to talk",
+			"payload":"getStartedTalk"
 		},
 		{
-		"content_type":"text",
-		"title":"I want to act",
-		"payload":"getStartedAct"
+			"content_type":"text",
+			"title":"I want to act",
+			"payload":"getStartedAct"
 		},
 		{
-		"content_type":"text",
-		"title":"I want to help",
-		"payload":"getStartedHelp"
+			"content_type":"text",
+			"title":"I want to help",
+			"payload":"getStartedHelp"
 		}
 	],
   "getStartedTalk" : 
@@ -43,21 +43,21 @@
 			"payload":"today"
 	   	},
 	    {
-				"content_type":"text",
-				"title":"Last week",
-				"payload":"lastWeek"
+			"content_type":"text",
+			"title":"Last week",
+			"payload":"lastWeek"
 	     },
-			{
-				"content_type":"text",
-				"title":"Last month",
-				"payload":"lastMonth"
+		{
+			"content_type":"text",
+			"title":"Last month",
+			"payload":"lastMonth"
 	     }
-		],
-	"initialLocation":
-		[
-			{
-				"content_type":"location",
-				"payload":"user_location"
-			}
+	],
+  "initialLocation":
+	[
+		{
+			"content_type":"location",
+			"payload":"user_location"
+		}
     ]
 }
