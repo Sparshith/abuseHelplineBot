@@ -185,13 +185,19 @@ function receivedMessage(event) {
     var quickReplyPayload = quickReply.payload;
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
-    if(quickReplyPayload == 'getStartedTalk') {
-      sendQuickReply(senderID, 'getStartedTalk');
-    } else if(quickReplyPayload == 'getStartedAct') {
-      sendQuickReply(senderID, 'getStartedAct');
-    } else if(quickReplyPayload == "getStartedHelp") {
-      sendQuickReply(senderID, 'getStartedHelp');
+
+    //Checking if quickReply exists 
+  jsonfile.readFile(quickRepliesPath, function(err, obj) {
+    if(err) {
+      return callback&&callback(err);
     }
+    
+    if((quickReplyPayload in obj)) 
+    {
+     sendQuickReply(senderID, quickReplyPayload);
+    }
+    
+  });
 
     return;
   }
@@ -207,7 +213,9 @@ function receivedMessage(event) {
       case 'button':
         sendButtonMessage(senderID);
       default:
-        sendTextMessage(senderID, messageText);
+      {
+        sendQuickReply(senderID, 'defaultMessage');
+      }
     }
   } else if (messageAttachments) {
       
@@ -365,8 +373,8 @@ function sendQuickReply(recipientId, useCase) {
         }
         getUserDetails(recipientId, userDetailsFetched); 
         return;
-
         break;
+
       case 'getStartedTalk':
         quickReplyMessage = {
           text: "Tell me, I am here for you. What can I do?",
@@ -386,7 +394,14 @@ function sendQuickReply(recipientId, useCase) {
           quick_replies: replyOptions
         };
         break;
-      default:
+
+      case 'defaultMessage':
+        quickReplyMessage = {
+          text: "If you feel I'm not really helping, I feel you should contact this expert, they can help! Also, please email me to tell me how I can improve ",
+        }
+        break;
+
+      default: return;
         break;
     }
     messageData.message = quickReplyMessage;
