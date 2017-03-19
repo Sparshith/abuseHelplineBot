@@ -187,7 +187,7 @@ function receivedMessage(event) {
        sendQuickReply(senderID, quickReplyPayload);
       }
     }
-    
+    getAllQuickReplies(quickReplyObjectFetched);
 
     return;
   }
@@ -252,6 +252,7 @@ function receivedPostback(event) {
     }
 
     if(payload in allQuickReplies) {
+      console.log("here");
       sendQuickReply(senderID, payload);
     }
   };
