@@ -22,7 +22,7 @@
 	   {
 			"content_type":"text",
 			"title":"I was abused",
-			"payload":"gsTalkAbused"
+			"payload":"askAbusedTime"
 	   },
 	   {
 			"content_type":"text",
@@ -53,11 +53,26 @@
 			"payload":"lastMonth"
 	     }
 	],
+	"today":
+	[
+		{
+			"content_type":"location",
+			"title":"Send Location",
+			"payload":"user_location"
+		}
+    ],
   "initialLocation":
 	[
 		{
 			"content_type":"location",
+			"title":"Send Location",
 			"payload":"user_location"
 		}
-    ]
+    ],
+   "defaultMessage":
+   	[
+   		{
+   			"content_type":"text"
+   		}
+   	]
 }

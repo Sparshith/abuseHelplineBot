@@ -198,7 +198,6 @@ function receivedMessage(event) {
     }
     
   });
-
     return;
   }
 
@@ -207,7 +206,8 @@ function receivedMessage(event) {
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
     switch (messageText) {
-      case 'I have been abused':
+      case 'I was abused':
+      conole.log("In I was abused");  
         sendQuickReply(senderID, 'askAbusedTime');
         break;
       case 'button':
@@ -218,7 +218,6 @@ function receivedMessage(event) {
       }
     }
   } else if (messageAttachments) {
-      
     /**
     * Currently assume only one attachment exists
     **/
@@ -244,7 +243,7 @@ function receivedMessage(event) {
               console.log(error);
               return false;
             }
-            sendTextMessage(senderID, "This is the nearest hospital to you." );
+            sendTextMessage(senderID, "This is the nearest hospital to you. You're going to be alright" );
             sendTextMessage(senderID, "https://www.google.com/maps/dir/" + lat + "," + lon + "/" + response['results'][1]['name'].split(' ').join('+'));
         });
         break;
@@ -362,6 +361,7 @@ function sendQuickReply(recipientId, useCase) {
     var quickReplyMessage = {};
 
     switch(useCase) {
+
       case 'getStarted':
         var userDetailsFetched = function(err, userDetails) {
           quickReplyMessage = {
@@ -384,13 +384,21 @@ function sendQuickReply(recipientId, useCase) {
 
       case 'initialLocation':
         quickReplyMessage = { 
-          text : "Hi " + '' + ", We are here to help you. Send us your location to help you out better.", 
+          text : "Hi " + '' + ", I am here to help you. Send us your location to help you out better.", 
           quick_replies: replyOptions
         };
         break;
+
       case 'askAbusedTime':
         quickReplyMessage = {
-          text: "Hi "+ ''  + ", I understand this is a tough time for you. I'm here to help. When did this happen?",
+          text: "I understand this is a tough time for you. I'm going to help you. Tell me, when did this happen?",
+          quick_replies: replyOptions
+        };
+        break;
+
+      case 'today':
+        quickReplyMessage = {
+          text: "Okay, send me your location, so that I can find the nearest help",
           quick_replies: replyOptions
         };
         break;
