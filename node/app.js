@@ -185,14 +185,19 @@ function receivedMessage(event) {
     var quickReplyPayload = quickReply.payload;
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
-    if(quickReplyPayload == 'getStartedTalk') {
-      sendQuickReply(senderID, 'getStartedTalk');
-    } else if(quickReplyPayload == 'getStartedAct') {
-      sendQuickReply(senderID, 'getStartedAct');
-    } else if(quickReplyPayload == "getStartedHelp") {
-      sendQuickReply(senderID, 'getStartedHelp');
-    }
 
+    //Checking if quickReply exists 
+  jsonfile.readFile(quickRepliesPath, function(err, obj) {
+    if(err) {
+      return callback&&callback(err);
+    }
+    
+    if((quickReplyPayload in obj)) 
+    {
+     sendQuickReply(senderID, quickReplyPayload);
+    }
+    
+  });
     return;
   }
 
@@ -201,16 +206,18 @@ function receivedMessage(event) {
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
     switch (messageText) {
-      case 'I have been abused':
+      case 'I was abused':
+      conole.log("In I was abused");  
         sendQuickReply(senderID, 'askAbusedTime');
         break;
       case 'button':
         sendButtonMessage(senderID);
       default:
-        sendTextMessage(senderID, messageText);
+      {
+        sendQuickReply(senderID, 'defaultMessage');
+      }
     }
   } else if (messageAttachments) {
-      
     /**
     * Currently assume only one attachment exists
     **/
@@ -236,7 +243,7 @@ function receivedMessage(event) {
               console.log(error);
               return false;
             }
-            sendTextMessage(senderID, "This is the nearest hospital to you." );
+            sendTextMessage(senderID, "This is the nearest hospital to you. You're going to be alright" );
             sendTextMessage(senderID, "https://www.google.com/maps/dir/" + lat + "," + lon + "/" + response['results'][1]['name'].split(' ').join('+'));
         });
         break;
@@ -354,6 +361,7 @@ function sendQuickReply(recipientId, useCase) {
     var quickReplyMessage = {};
 
     switch(useCase) {
+
       case 'getStarted':
         var userDetailsFetched = function(err, userDetails) {
           quickReplyMessage = {
@@ -365,8 +373,8 @@ function sendQuickReply(recipientId, useCase) {
         }
         getUserDetails(recipientId, userDetailsFetched); 
         return;
-
         break;
+
       case 'getStartedTalk':
         quickReplyMessage = {
           text: "Tell me, I am here for you. What can I do?",
@@ -376,17 +384,32 @@ function sendQuickReply(recipientId, useCase) {
 
       case 'initialLocation':
         quickReplyMessage = { 
-          text : "Hi " + '' + ", We are here to help you. Send us your location to help you out better.", 
+          text : "Hi " + '' + ", I am here to help you. Send us your location to help you out better.", 
           quick_replies: replyOptions
         };
         break;
+
       case 'askAbusedTime':
         quickReplyMessage = {
-          text: "Hi "+ ''  + ", I understand this is a tough time for you. I'm here to help. When did this happen?",
+          text: "I understand this is a tough time for you. I'm going to help you. Tell me, when did this happen?",
           quick_replies: replyOptions
         };
         break;
-      default:
+
+      case 'today':
+        quickReplyMessage = {
+          text: "Okay, send me your location, so that I can find the nearest help",
+          quick_replies: replyOptions
+        };
+        break;
+
+      case 'defaultMessage':
+        quickReplyMessage = {
+          text: "If you feel I'm not really helping, I feel you should contact this expert, they can help! Also, please email me to tell me how I can improve ",
+        }
+        break;
+
+      default: return;
         break;
     }
     messageData.message = quickReplyMessage;
