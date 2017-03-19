@@ -210,8 +210,9 @@ function receivedMessage(event) {
       conole.log("In I was abused");  
         sendQuickReply(senderID, 'askAbusedTime');
         break;
-      case 'button':
+      case 'call spar':
         sendButtonMessage(senderID);
+        break;
       default:
       {
         sendQuickReply(senderID, 'defaultMessage');
@@ -288,19 +289,11 @@ function sendButtonMessage(recipientId) {
         type: "template",
         payload: {
           template_type: "button",
-          text: "This is test text",
+          text: "You are being very brave. This should help you.",
           buttons:[{
-            type: "web_url",
-            url: "https://www.oculus.com/en-us/rift/",
-            title: "Open Web URL"
-          }, {
-            type: "postback",
-            title: "Trigger Postback",
-            payload: "DEVELOPER_DEFINED_PAYLOAD"
-          }, {
-            type: "phone_number",
-            title: "Call Phone Number",
-            payload: "+16505551234"
+          "type":"phone_number",
+          "title":"Sparshith",
+          "payload":"+919901149676"
           }]
         }
       }
