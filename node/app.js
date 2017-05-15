@@ -253,7 +253,6 @@ function receivedPostback(event) {
     }
 
     if(payload in allQuickReplies) {
-      console.log("here");
       sendQuickReply(senderID, payload);
     }
   };
@@ -356,8 +355,9 @@ function sendQuickReply(recipientId, useCase) {
 
       case 'getStarted':
         var userDetailsFetched = function(err, userDetails) {
+          sendTextMessage(recipientId, "Hi "+  userDetails.firstName + ", Thank you for reaching out. I am here to help you. ");
           quickReplyMessage = {
-            text: "Hi "+  userDetails.firstName + ", What would you like to do?",
+            text: "Please remember that this is not a crisis helpline. If you are in immediate danger, we strongly urge you to call 100 to reach the national police helpline.",
             quick_replies: replyOptions
           };
           messageData.message = quickReplyMessage;
