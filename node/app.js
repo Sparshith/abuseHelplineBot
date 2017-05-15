@@ -247,7 +247,7 @@ function receivedPostback(event) {
   var recipientID = event.recipient.id;
   var timeOfPostback = event.timestamp;
   var payload = event.postback.payload;
-  setTypingIndicator(recipientId);
+  setTypingIndicator(senderID);
 
   var quickReplyObjectFetched = function(err, allQuickReplies) {
     if(err) {
