@@ -247,6 +247,7 @@ function receivedPostback(event) {
   var recipientID = event.recipient.id;
   var timeOfPostback = event.timestamp;
   var payload = event.postback.payload;
+  setTypingIndicator(recipientId);
 
   var quickReplyObjectFetched = function(err, allQuickReplies) {
     if(err) {
@@ -273,6 +274,16 @@ function sendTextMessage(recipientId, messageText) {
     }
   };
 
+  callSendAPI(messageData);
+}
+
+function setTypingIndicator(recipientId) {
+  var messageData = {
+    recipient:{
+          id: recipientId
+    },
+    sender_action:"typing_on"
+  };
   callSendAPI(messageData);
 }
 
