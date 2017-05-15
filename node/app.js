@@ -20,7 +20,8 @@ const
   googleplaces = require('googleplaces'),
   jsonfile = require('jsonfile'),
   quickRepliesPath = __dirname + '/data/quick_replies.json',
-  mysql = require('mysql')
+  mysql = require('mysql'),
+  sleep = require('sleep')
 
 
 var app = express();
@@ -356,6 +357,7 @@ function sendQuickReply(recipientId, useCase) {
       case 'getStarted':
         var userDetailsFetched = function(err, userDetails) {
           sendTextMessage(recipientId, "Hi "+  userDetails.firstName + ", Thank you for reaching out. I am here to help you. ");
+          sleep.sleep(1);
           quickReplyMessage = {
             text: "Please remember that this is not a crisis helpline. If you are in immediate danger, we strongly urge you to call 100 to reach the national police helpline.",
             quick_replies: replyOptions
