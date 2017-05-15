@@ -368,7 +368,7 @@ function sendQuickReply(recipientId, useCase) {
       case 'getStarted':
         var userDetailsFetched = function(err, userDetails) {
           sendTextMessage(recipientId, "Hi "+  userDetails.firstName + ", Thank you for reaching out. I am here to help you. ");
-          sleep.sleep(1);
+          sleep.sleep(3);
           quickReplyMessage = {
             text: "Please remember that this is not a crisis helpline. If you are in immediate danger, we strongly urge you to call 100 to reach the national police helpline.",
             quick_replies: replyOptions
