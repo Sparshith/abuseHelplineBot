@@ -20,8 +20,7 @@ const
   googleplaces = require('googleplaces'),
   jsonfile = require('jsonfile'),
   quickRepliesPath = __dirname + '/data/quick_replies.json',
-  mysql = require('mysql'),
-  sleep = require('sleep')
+  mysql = require('mysql')
 
 
 var app = express();
@@ -86,8 +85,6 @@ app.post('/webhook', function (req, res) {
           receivedMessage(messagingEvent);
         } else if (messagingEvent.postback) {
           receivedPostback(messagingEvent);
-        } else {
-          console.log("Webhook received unknown messagingEvent: ", messagingEvent);
         }
       });
     });
@@ -263,7 +260,7 @@ function receivedPostback(event) {
 
 }
 
-function sendTextMessage(recipientId, messageText) {
+function sendTextMessage(recipientId, messageText, callback) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -274,7 +271,7 @@ function sendTextMessage(recipientId, messageText) {
     }
   };
 
-  callSendAPI(messageData);
+  callSendAPI(messageData, callback);
 }
 
 function setTypingIndicator(recipientId) {
@@ -367,14 +364,22 @@ function sendQuickReply(recipientId, useCase) {
 
       case 'getStarted':
         var userDetailsFetched = function(err, userDetails) {
-          sendTextMessage(recipientId, "Hi "+  userDetails.firstName + ", Thank you for reaching out. I am here to help you. ");
-          sleep.sleep(3);
-          quickReplyMessage = {
-            text: "Please remember that this is not a crisis helpline. If you are in immediate danger, we strongly urge you to call 100 to reach the national police helpline.",
-            quick_replies: replyOptions
+          var firstMessageSent = function(err) {
+            if(!err) {
+              var secondMessageSent = function(err) {
+                if(!err) {
+                  quickReplyMessage = {
+                    text: "How may I help you?",
+                    quick_replies: replyOptions
+                  };
+                  messageData.message = quickReplyMessage;
+                  callSendAPI(messageData);
+                }
+              };
+              sendTextMessage(recipientId, "Please remember that this is not a crisis helpline. If you are in immediate danger, we strongly urge you to call 100 to reach the national police helpline.", secondMessageSent);
+            }
           };
-          messageData.message = quickReplyMessage;
-          callSendAPI(messageData);
+          sendTextMessage(recipientId, "Hi "+  userDetails.firstName + ", thank you for reaching out. I am here to help you. ", firstMessageSent);
         }
         getUserDetails(recipientId, userDetailsFetched); 
         return;
@@ -424,7 +429,7 @@ function sendQuickReply(recipientId, useCase) {
   getQuickReplyOptions(useCase, replyOptionsFetched);
 };
 
-function callSendAPI(messageData) {
+function callSendAPI(messageData, callback) {
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },
@@ -437,9 +442,9 @@ function callSendAPI(messageData) {
       var messageId = body.message_id;
 
       if (messageId) {
-        console.log("Successfully sent message with id %s to recipient %s", 
-          messageId, recipientId);
+        return callback&&callback();
       } else {
+        return callback&&callback();
       console.log("Successfully called Send API for recipient %s", 
         recipientId);
       }
