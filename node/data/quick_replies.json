@@ -1,22 +1,120 @@
 {
-  "getStarted" :
-	[
-		{
-			"content_type":"text",
-			"title":"I want to talk",
-			"payload":"getStartedTalk"
-		},
-		{
-			"content_type":"text",
-			"title":"I want to act",
-			"payload":"getStartedAct"
-		},
-		{
-			"content_type":"text",
-			"title":"I want to help",
-			"payload":"getStartedHelp"
-		}
-	],
+  "getStarted" : {
+    "text": "How may I help you?",
+    "quick_replies":[
+      {
+        "content_type":"text",
+        "title":"Get help",
+        "payload":"getStartedNeedHelp"
+      },
+  		{ 
+  			"content_type":"text",
+  			"title":"I want to help",
+  			"payload":"getStartedHelp"
+  		},
+      {
+        "content_type":"text",
+        "title":"Panic button",
+        "payload":"getStartedHelp",
+        "image_url": "assets/red.png"
+      }
+    ]
+  },
+  "getStartedNeedHelp": {
+    "text": "What kind of help do you need?",
+    "quick_replies": [
+      {
+        "content_type":"text",
+        "title":"Act",
+        "payload":"needHelpAct"
+      },
+      {
+        "content_type":"text",
+        "title":"Get advice",
+        "payload":"needHelpAdvice" 
+      }
+    ]
+  },
+  "getStartedHelp": {
+    "text": "How would you like to help?",
+    "quick_replies": [
+      {
+        "content_type":"text",
+        "title":"Improve this bot",
+        "payload":"helpBot"
+      },
+      {
+        "content_type":"text",
+        "title":"Help surviors of abuse",
+        "payload":"helpGeneral" 
+      }
+    ]
+  },
+  "needHelpAct": {
+    "text": "What would you like to do?",
+    "quick_replies": [
+      {
+        "content_type":"text",
+        "title":"Report Abuse",
+        "payload":"reportAbuse" 
+      },
+      {
+        "content_type":"text",
+        "title":"Book a cab",
+        "payload":"bookCab"
+      },
+      {
+        "content_type":"text",
+        "title":"Go to a hospital",
+        "payload":"visitHospital" 
+      },
+      {
+        "content_type":"text",
+        "title":"Go to a police station",
+        "payload":"visitPolice" 
+      },
+      {
+        "content_type":"text",
+        "title":"Back",
+        "payload":"getStartedNeedHelp" 
+      }
+    ]
+  },
+  "needHelpAdvice": {
+    "text": "Sure, I'm here to connect you with people and services that can give you helpful advice.",
+    "quick_replies": [
+      {
+        "content_type":"text",
+        "title":"Call helpline",
+        "payload":"callHelpline" 
+      },
+      {
+        "content_type":"text",
+        "title":"Chat with a Counsellor",
+        "payload":"chatCounsellor"
+      },
+      {
+        "content_type":"text",
+        "title":"Find Counsellor",
+        "payload":"findCounsellor" 
+      },
+      {
+        "content_type":"text",
+        "title":"Contact Lawyer",
+        "payload":"contactLawyer" 
+      },
+      {
+        "content_type":"text",
+        "title":"Get Clarity",
+        "payload":"discussEvent" 
+      },
+      {
+        "content_type":"text",
+        "title":"Back",
+        "payload":"getStartedNeedHelp" 
+      }
+    ]
+  },
   "getStartedTalk" : 
   	[
 	   {

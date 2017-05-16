@@ -164,9 +164,10 @@ function receivedMessage(event) {
     //Checking if quickReply exists 
     var quickReplyObjectFetched = function(err, allQuickReplies) {
       if(err) {
+        console.log(err);
         return callback&&callback(err);
       }
-    
+
       if(quickReplyPayload in allQuickReplies) {
        sendQuickReply(senderID, quickReplyPayload);
       }
@@ -352,82 +353,55 @@ function sendQuickReply(recipientId, useCase) {
       return false;
     }
 
-    var messageData = {
-      recipient: {
-        id: recipientId
+    for(var i in replyOptions.quick_replies) {
+      var replyOption = replyOptions.quick_replies[i];
+      if(replyOption.image_url) {
+        replyOptions.quick_replies[i]['image_url'] = SERVER_URL + replyOption.image_url;
       }
-    };
-
-    var quickReplyMessage = {};
-
-    switch(useCase) {
-
-      case 'getStarted':
-        var userDetailsFetched = function(err, userDetails) {
-          var firstMessageSent = function(err) {
-            if(!err) {
-              var secondMessageSent = function(err) {
-                if(!err) {
-                  quickReplyMessage = {
-                    text: "How may I help you?",
-                    quick_replies: replyOptions
-                  };
-                  messageData.message = quickReplyMessage;
-                  callSendAPI(messageData);
-                }
-              };
-              sendTextMessage(recipientId, "Please remember that this is not a crisis helpline. If you are in immediate danger, we strongly urge you to call 100 to reach the national police helpline.", secondMessageSent);
-            }
-          };
-          sendTextMessage(recipientId, "Hi "+  userDetails.firstName + ", thank you for reaching out. I am here to help you. ", firstMessageSent);
-        }
-        getUserDetails(recipientId, userDetailsFetched); 
-        return;
-        break;
-
-      case 'getStartedTalk':
-        quickReplyMessage = {
-          text: "Tell me, I am here for you. What can I do?",
-          quick_replies: replyOptions
-        };
-        break;
-
-      case 'initialLocation':
-        quickReplyMessage = { 
-          text : "Hi " + '' + ", I am here to help you. Send us your location to help you out better.", 
-          quick_replies: replyOptions
-        };
-        break;
-
-      case 'askAbusedTime':
-        quickReplyMessage = {
-          text: "I understand this is a tough time for you. I'm going to help you. Tell me, when did this happen?",
-          quick_replies: replyOptions
-        };
-        break;
-
-      case 'today':
-        quickReplyMessage = {
-          text: "Okay, send me your location, so that I can find the nearest help",
-          quick_replies: replyOptions
-        };
-        break;
-
-      case 'defaultMessage':
-        quickReplyMessage = {
-          text: "If you feel I'm not really helping, I feel you should contact this expert, they can help! Also, please email me to tell me how I can improve ",
-        }
-        break;
-
-      default: return;
-        break;
     }
-    messageData.message = quickReplyMessage;
-    callSendAPI(messageData);
+
+
+    /**
+    * Define special cases here.
+    **/
+    if(useCase === 'getStarted') {
+      return startConversation(recipientId, replyOptions);
+    } else {
+      var messageData = {
+        recipient: {
+          id: recipientId
+        }
+      };
+      messageData.message = replyOptions;
+      callSendAPI(messageData);
+    }
   }
 
   getQuickReplyOptions(useCase, replyOptionsFetched);
 };
+
+function startConversation(userId, replyOptions) {
+  var userDetailsFetched = function(err, userDetails) {
+    var firstMessageSent = function(err) {
+      if(!err) {
+        var secondMessageSent = function(err) {
+          if(!err) {
+            var messageData = {
+              recipient: {
+                id: userId
+              }
+            };
+            messageData.message = replyOptions;
+            callSendAPI(messageData);
+          }
+        };
+        sendTextMessage(userId, "Please remember that this is not a crisis helpline. If you are in immediate danger, we strongly urge you to call 100 to reach the national police helpline.", secondMessageSent);
+      }
+    };
+    sendTextMessage(userId, "Hi "+  userDetails.firstName + ", thank you for reaching out. I am here to help you. ", firstMessageSent);
+  }
+  getUserDetails(userId, userDetailsFetched); 
+}
 
 function callSendAPI(messageData, callback) {
   request({
