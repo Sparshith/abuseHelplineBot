@@ -80,6 +80,21 @@
       }
     ]
   },
+  "reportAbuse": {
+  	"text": "When did you face abuse?",
+  	"quick_replies" :[
+  		{
+        "content_type":"text",
+        "title":"Recently",
+        "payload":"reportAbuseRecent"
+  		},
+  		{
+  			"content_type":"text",
+        "title":"A while ago",
+        "payload":"reportAbusePast"
+  		}
+  	]
+  },
   "needHelpAdvice": {
     "text": "Sure, I'm here to connect you with people and services that can give you helpful advice.",
     "quick_replies": [
