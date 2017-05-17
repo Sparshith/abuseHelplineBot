@@ -25,7 +25,7 @@
     "quick_replies": [
       {
         "content_type":"text",
-        "title":"Act",
+        "title":"Act Now",
         "payload":"needHelpAct"
       },
       {
