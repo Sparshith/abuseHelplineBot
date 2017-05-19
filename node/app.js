@@ -20,8 +20,8 @@ const
   googleplaces = require('googleplaces'),
   jsonfile = require('jsonfile'),
   quickRepliesPath = __dirname + '/data/quick_replies.json',
-  buttonMessagePath = __dirname + '/data/button_messages.json'
-  //mysql = require('mysql')
+  buttonMessagePath = __dirname + '/data/button_messages.json',
+  mysql = require('mysql')
 
 
 var app = express();
@@ -30,7 +30,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
 
-/*
+
 var dbConfig = config.get('mysql');
 var db = mysql.createConnection({
   host     : dbConfig.host,
@@ -39,7 +39,7 @@ var db = mysql.createConnection({
   database : dbConfig.database
 });
 db.connect();
-*/
+
 
 const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ? 
   process.env.MESSENGER_APP_SECRET :
