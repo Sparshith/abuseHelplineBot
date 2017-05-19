@@ -15,8 +15,18 @@
       {
         "content_type":"text",
         "title":"Panic button",
-        "payload":"getStartedHelp",
+        "payload":"panicButton",
         "image_url": "assets/red.png"
+      }
+    ]
+  },
+  "panicButton": {
+    "text": "What kind of help do you need?",
+    "quick_replies": [
+      {
+        "content_type":"text",
+        "title":"PanicButton",
+        "payload":"needHelpAct"
       }
     ]
   },
@@ -30,7 +40,7 @@
       },
       {
         "content_type":"text",
-        "title":"Get advice",
+        "title":"Get Advice",
         "payload":"needHelpAdvice" 
       }
     ]
@@ -65,12 +75,12 @@
       },
       {
         "content_type":"text",
-        "title":"Go to a hospital",
+        "title":"Go to hospital",
         "payload":"visitHospital" 
       },
       {
         "content_type":"text",
-        "title":"Go to a police station",
+        "title":"Go to police station",
         "payload":"visitPolice" 
       },
       {
@@ -92,9 +102,285 @@
   			"content_type":"text",
         "title":"A while ago",
         "payload":"reportAbusePast"
-  		}
+  		},
+      {
+        "content_type":"text",
+        "title":"Back",
+        "payload":"needHelpAct" 
+      }
   	]
   },
+
+  "reportAbuseRecent": {
+    "text": "Are you physically hurt right now?",
+    "quick_replies" :[
+      {
+        "content_type":"text",
+        "title":"Yes I'm hurt",
+        "payload":"reportAbuseRecentHurt"
+      },
+      {
+        "content_type":"text",
+        "title":"No I'm not hurt",
+        "payload":"reportAbuseRecentNotHurt"
+      },
+      {
+        "content_type":"text",
+        "title":"Back",
+        "payload":"reportAbuse" 
+      }
+    ]
+  },
+
+  "reportAbuseRecentHurt": {
+    "text": "Are you in immediate danger and need to leave the area?",
+    "quick_replies" :[
+      {
+        "content_type":"text",
+        "title":"Yes, Book Cab",
+        "payload":"reportAbuseBookCab"
+      },
+      {
+        "content_type":"text",
+        "title":"No I'm safe",
+        "payload":"reportAbuseSafeArea"
+      },
+      {
+        "content_type":"text",
+        "title":"Back",
+        "payload":"reportAbuseRecent" 
+      }
+    ]
+  },
+
+  "reportAbuseSafeArea": {
+    "text": "Which gender do you identify as?",
+    "quick_replies" :[
+      {
+        "content_type":"text",
+        "title":"Female",
+        "payload":"genderFemale"
+      },
+      {
+        "content_type":"text",
+        "title":"Male",
+        "payload":"genderMale"
+      },
+      {
+        "content_type":"text",
+        "title":"Transgender",
+        "payload":"genderTransgender"
+      },
+      {
+        "content_type":"text",
+        "title":"Back",
+        "payload":"reportAbuseRecentHurt" 
+      }
+    ]
+  },
+
+  "genderFemale": {
+    "text": "Are you 18 years of age or older?",
+    "quick_replies" :[
+      {
+        "content_type":"text",
+        "title":"Yes I'm 18+",
+        "payload":"age18Plus"
+      },
+      {
+        "content_type":"text",
+        "title":"No I'm not 18",
+        "payload":"age18Minus"
+      },
+      {
+        "content_type":"text",
+        "title":"Back",
+        "payload":"reportAbuseSafeArea" 
+      }
+    ]
+  },
+
+  "genderMale": {
+    "text": "Are you 18 years of age or older?",
+    "quick_replies" :[
+      {
+        "content_type":"text",
+        "title":"Yes I'm 18+",
+        "payload":"age18Plus"
+      },
+      {
+        "content_type":"text",
+        "title":"No I'm not 18",
+        "payload":"age18Minus"
+      },
+      {
+        "content_type":"text",
+        "title":"Back",
+        "payload":"reportAbuseSafeArea" 
+      }
+    ]
+  },
+
+  "genderTransgender": {
+    "text": "Are you 18 years of age or older?",
+    "quick_replies" :[
+      {
+        "content_type":"text",
+        "title":"Yes I'm 18+",
+        "payload":"age18Plus"
+      },
+      {
+        "content_type":"text",
+        "title":"No I'm not 18",
+        "payload":"age18Minus"
+      },
+      {
+        "content_type":"text",
+        "title":"Back",
+        "payload":"reportAbuseSafeArea" 
+      }
+    ]
+  },
+
+  "age18Plus": {
+    "text": "Which of the following sounds closest to your experience of abuse?",
+    "quick_replies" :[
+      {
+        "content_type":"text",
+        "title":"Rape",
+        "payload":"abuseRape"
+      },
+      {
+        "content_type":"text",
+        "title":"Maritial Rape",
+        "payload":"abuseMaritialRape"
+      },
+      {
+        "content_type":"text",
+        "title":"Domestic Violence",
+        "payload":"abuseDomesticViolence"
+      },
+      {
+        "content_type":"text",
+        "title":"Work Sexual Harrasment",
+        "payload":"abuseSexualHarassmentWork"
+      },
+      {
+        "content_type":"text",
+        "title":"Verbal Abuse",
+        "payload":"abuseVerbalAbuse"
+      },
+      {
+        "content_type":"text",
+        "title":"Physical Abuse",
+        "payload":"abusePhysicalAbuse"
+      },
+      {
+        "content_type":"text",
+        "title":"Cyber Abuse",
+        "payload":"abuseCyberAbuse"
+      }
+    ]
+  },
+
+  "abuseSexualHarassmentWork": {
+    "text": "Do you want to talk about your current circumstance?",
+    "quick_replies": [
+      {
+        "content_type":"text",
+        "title":"Yes",
+        "payload":"sexualHarassmentTalk"
+      },
+      {
+        "content_type":"text",
+        "title":"No",
+        "payload":"sexualHarassmentNotTalk" 
+      }
+    ]
+  },
+
+  "sexualHarassmentTalk": {
+    "text": "Do you feel comfortable confiding this with anyone, such as your family or friends?",
+    "quick_replies": [
+      {
+        "content_type":"text",
+        "title":"Yes",
+        "payload":"confideComfortable"
+      },
+      {
+        "content_type":"text",
+        "title":"No",
+        "payload":"confideNotComfortable" 
+      },
+      {
+        "content_type":"text",
+        "title":"Back",
+        "payload":"abuseSexualHarassmentWork" 
+      }
+    ]
+  },
+
+  "confideNotComfortable": {
+    "text": "Are you having negative thoughts you can't get rid of?",
+    "quick_replies": [
+      {
+        "content_type":"text",
+        "title":"Yes intrusive thoughts",
+        "payload":"intrusiveThoughtsYes"
+      },
+      {
+        "content_type":"text",
+        "title":"No intrusive thoughts",
+        "payload":"intrusiveThoughtsNo" 
+      },
+      {
+        "content_type":"text",
+        "title":"Back",
+        "payload":"sexualHarassmentTalk" 
+      }
+    ]
+  },
+
+  "intrusiveThoughtsYes": {
+    "text": "Have you had suicidal thoughts lately?",
+    "quick_replies": [
+      {
+        "content_type":"text",
+        "title":"Yes having suicidal thoughts",
+        "payload":"suicidalThoughtsYes"
+      },
+      {
+        "content_type":"text",
+        "title":"No not having suicidal thoughts",
+        "payload":"suicidalThoughtsNo" 
+      },
+      {
+        "content_type":"text",
+        "title":"Back",
+        "payload":"confideNotComfortable" 
+      }
+    ]
+  },
+
+  "suicidalThoughtsYes": {
+    "text": "This helpine is here to help you.",
+    "quick_replies": [
+      {
+        "content_type":"text",
+        "title":"",
+        "payload":""
+      }
+    ]
+  },
+
+  "visitHospital":
+  [
+    {
+      "content_type":"location",
+      "title":"Send Location",
+      "payload":"user_location"
+    }
+  ],
   "needHelpAdvice": {
     "text": "Sure, I'm here to connect you with people and services that can give you helpful advice.",
     "quick_replies": [
@@ -105,7 +391,7 @@
       },
       {
         "content_type":"text",
-        "title":"Chat with a Counsellor",
+        "title":"Chat with Counsellor",
         "payload":"chatCounsellor"
       },
       {
@@ -130,6 +416,18 @@
       }
     ]
   },
+
+  "findCounsellor": {
+    "text": " ",
+    "quick_replies": [
+      {
+        "content_type":"text",
+        "title":"Back",
+        "payload":"needHelpAdvice" 
+      }
+    ]
+  },
+
   "getStartedTalk" : 
   	[
 	   {
@@ -173,7 +471,7 @@
 			"title":"Send Location",
 			"payload":"user_location"
 		}
-    ],
+  ],
   "initialLocation":
 	[
 		{
@@ -181,7 +479,7 @@
 			"title":"Send Location",
 			"payload":"user_location"
 		}
-    ],
+  ],
    "defaultMessage":
    	[
    		{
