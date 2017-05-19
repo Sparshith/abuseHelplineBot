@@ -170,8 +170,8 @@ function receivedMessage(event) {
       case 'location':
         var lat = attachment.payload.coordinates.lat;
         var lon = attachment.payload.coordinates.long;
-        console.log("Contents of payload " , payload);
-        console.log(lat, lon);
+        // console.log("Contents of payload " , payload);
+        // console.log(lat, lon);
         var NearBySearch = require("googleplaces/lib/NearBySearch");
         var nearBySearch = new NearBySearch(config.get('googlePlacesApiKey'), config.get('googlePlacesApiKeyOutputFormat'));
         var parameters = {
@@ -185,6 +185,7 @@ function receivedMessage(event) {
               console.log(error);
               return false;
             }
+
             sendTextMessage(senderID, "This is the nearest hospital to you. You're going to be alright" );
             sendTextMessage(senderID, "https://www.google.com/maps/dir/" + lat + "," + lon + "/" + response['results'][1]['name'].split(' ').join('+'));
         });
@@ -392,7 +393,6 @@ function sendQuickReply(recipientId, useCase) {
     /**
     * Define special cases here.
     **/
-    
     if(useCase === 'getStarted') {
       return startConversation(recipientId, replyOptions);
     } 
@@ -424,26 +424,12 @@ function sendQuickReply(recipientId, useCase) {
 
 
 function counsellorInfo(userId, replyOptions) {
-  var userDetailsFetched = function(err, userDetails) {
-    var firstMessageSent = function(err) {
-      if(!err) {
-        var secondMessageSent = function(err) {
-          if(!err) {
-            var messageData = {
-              recipient: {
-                id: userId
-              }
-            };
-            messageData.message = replyOptions;
-            callSendAPI(messageData);
-          }
-        };
-        sendTextMessage(userId, "Parivarthan\nhttp://www.parivarthan.org/ \n+917676602602\nychelpline@gmail.com \n\nInnersight\nhttp://www.innersight.in/ \ncounsellors@innersight.in", secondMessageSent);
-      }
-    };
-    sendTextMessage(userId, "Here is a list of counselling services in your area.", firstMessageSent);
-  }
-  getUserDetails(userId, userDetailsFetched); 
+  var firstMessageSent = function(err) {
+    if(!err) {
+      sendTextMessage(userId, "Parivarthan\nhttp://www.parivarthan.org/ \n+917676602602\nychelpline@gmail.com \n\nInnersight\nhttp://www.innersight.in/ \ncounsellors@innersight.in");
+    }
+  };
+  sendTextMessage(userId, "Here is a list of counselling services in your area.", firstMessageSent);
 }
 
 

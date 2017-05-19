@@ -373,14 +373,16 @@
     ]
   },
 
-  "visitHospital":
-  [
+  "visitHospital": {
+    "text": "We need your location for this. Could you please share it?",
+    "quick_replies":[
     {
       "content_type":"location",
       "title":"Send Location",
       "payload":"user_location"
     }
-  ],
+  ]
+  },
   "needHelpAdvice": {
     "text": "Sure, I'm here to connect you with people and services that can give you helpful advice.",
     "quick_replies": [
